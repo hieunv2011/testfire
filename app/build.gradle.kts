@@ -47,4 +47,5 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
     implementation ("com.makeramen:roundedimageview:2.3.0")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 }

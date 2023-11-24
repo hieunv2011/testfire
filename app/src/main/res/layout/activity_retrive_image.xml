@@ -5,7 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".RetriveImage">
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="349dp"
+        android:layout_height="298dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:selectedDateVerticalBar="@color/lavender"
+        />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -16,8 +32,12 @@
         android:backgroundTint="@color/lavender"
         app:tint = "@color/white"
         android:src="@drawable/baseline_add_24" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="375dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="0dp"
+        android:layout_marginBottom="8dp" />
 </RelativeLayout>

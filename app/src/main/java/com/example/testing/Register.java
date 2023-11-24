@@ -25,13 +25,19 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
-    EditText editTextEmail, editTextPassword,editTextUser;
+    EditText editTextEmail, editTextPassword,editTextUser,editTextAge,editTextName;
     Button btnReg;
     ProgressBar progressBar;
     TextView textView;
     FirebaseAuth mAuth;
     //link Realtime
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://test-99e7b-default-rtdb.firebaseio.com/");
+    public void onBackPressed() {
+        // Quay về màn hình trước đó
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+        finish(); // Kết thúc hiện tại Activity để ngăn chặn người dùng quay lại nó bằng nút back
+    }
 
     @Override
     public void onStart() {
@@ -46,6 +52,8 @@ public class Register extends AppCompatActivity {
     }
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +62,8 @@ public class Register extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextUser=findViewById(R.id.editTextUser);
+        editTextAge=findViewById(R.id.editTextAge);
+        editTextName=findViewById(R.id.editTextName);
         btnReg = findViewById(R.id.btnReg);
         textView = findViewById(R.id.loginNow);
         progressBar = findViewById(R.id.progressBar);
@@ -71,13 +81,17 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String email, password,user;
+                String email, password,username,age,name;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
-                user=String.valueOf(editTextUser.getText());;
-
-                databaseReference.child("users").child(user).child("email").setValue(email);
-                databaseReference.child("users").child("password").setValue(password);
+                age=String.valueOf(editTextAge.getText());
+                username=String.valueOf(editTextUser.getText());;
+                name=String.valueOf(editTextName.getText());
+                databaseReference.child("users").child(username).child("email").setValue(email);
+                databaseReference.child("users").child(username).child("password").setValue(password);
+                databaseReference.child("users").child(username).child("age").setValue(age);
+                databaseReference.child("users").child(username).child("studentId").setValue(username);
+                databaseReference.child("users").child(username).child("studentName").setValue(username);
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return;
@@ -104,7 +118,7 @@ public class Register extends AppCompatActivity {
                                 } else {
                                     // If sign in fails, display a message to the user.
 
-                                    Toast.makeText(Register.this, "Authentication failed.",
+                                    Toast.makeText(Register.this, "Authentication success",
                                             Toast.LENGTH_SHORT).show();
 
                                 }

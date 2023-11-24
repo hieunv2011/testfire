@@ -34,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
     StorageReference storageReference;
     ProgressDialog progressDialog;
     EditText editTextEmail, editTextPassword;
-    Button button;
-    Button button12, btnMap;
-    Button button13;
+    Button button, button12,btnMap,button13,btnStudentList;
     ProgressBar progressBar;
     TextView textView;
     FirebaseAuth auth;
@@ -52,6 +50,17 @@ public class MainActivity extends AppCompatActivity {
         btnMap=findViewById(R.id.mapBtn);
         button=findViewById(R.id.logout);
         textView=findViewById(R.id.user_details);
+        button13=findViewById(R.id.button13);
+        btnStudentList=findViewById(R.id.btnStudentList);
+
+        btnStudentList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),StudentList.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         button13.setOnClickListener((new View.OnClickListener() {
                     @Override
@@ -81,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         ));
+
+        //Lấy tên user về màn hình chính
+
         user = auth.getCurrentUser();
         if(user==null){
             Intent intent = new Intent(getApplicationContext(),Login.class);
@@ -90,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         else {
             textView.setText(user.getEmail());
         }
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

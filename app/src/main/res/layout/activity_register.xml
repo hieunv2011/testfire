@@ -10,66 +10,79 @@
         android:id="@+id/btnReg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="300dp"
+        android:layout_marginBottom="9dp"
         android:text="Đăng ký"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:backgroundTint="@color/main"
+        app:layout_constraintBottom_toTopOf="@+id/loginNow"
+        app:layout_constraintEnd_toEndOf="@+id/loginNow" />
 
-    <EditText
-        android:id="@+id/editTextEmail"
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="215dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="265dp"
-        android:hint="Nhập email"
-        app:layout_constraintBottom_toTopOf="@+id/editTextUser"
+        android:paddingTop="40dp"
+        android:layout_marginBottom="42dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/loginNow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="37dp"
-        android:hint="Nhập mật khẩu"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/btnReg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        <EditText
+            android:id="@+id/editTextUser"
+            android:layout_width="303dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="140dp"
+            android:backgroundTint="@color/main"
+            android:hint="Nhập mã số sinh viên" />
 
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="303dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/main"
+            android:hint="Nhập email" />
 
-    <EditText
-        android:id="@+id/editTextUser"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="153dp"
-        android:hint="Nhập username"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        <EditText
+
+            android:layout_width="303dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="80dp"
+            android:backgroundTint="@color/main"
+            android:id="@+id/editTextName"
+            android:hint="Nhập họ và tên "
+             />
+        <EditText
+            android:id="@+id/editTextAge"
+            android:layout_width="303dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="200dp"
+            android:backgroundTint="@color/main"
+            android:hint="Nhập tuổi" />
+        <EditText
+
+            android:layout_width="303dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="260dp"
+            android:backgroundTint="@color/main"
+            android:id="@+id/editTextPassword"
+            android:hint="Nhập mật khẩu"
+            android:inputType="textPassword"
+             />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="141dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="36dp"
-        android:text="Đăng ký bằng EMAIL"
+        android:layout_marginBottom="10dp"
+        android:text="Nhập thông tin sinh viên"
         android:textSize="28dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
-        app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -85,12 +98,25 @@
         android:id="@+id/loginNow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="236dp"
+        android:layout_marginBottom="31dp"
         android:gravity="center"
         android:text="Ấn để đăng nhập"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout3" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="680dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/baseline_supervised_user_circle_24" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

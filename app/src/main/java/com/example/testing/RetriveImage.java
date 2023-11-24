@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CalendarView;
+import android.widget.TextView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,20 +33,28 @@ import java.util.Locale;
 public class RetriveImage extends AppCompatActivity {
     FloatingActionButton fab;
     private RecyclerView recyclerView;
+    private int number;
     private ArrayList<DataClass> dataList;
     private MyAdapter adapter;
-
-    final SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd/", Locale.CANADA);
+    private CalendarView calendarView;
+    final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.CANADA);
     final Date now = new Date();
     final String fileName = formatter.format(now);
+    private String stringDateSelected;
+    public void onBackPressed() {
+        // Quay về màn hình trước đó
+        Intent intent = new Intent(this, Select.class);
+        startActivity(intent);
+        finish(); // Kết thúc hiện tại Activity để ngăn chặn người dùng quay lại nó bằng nút back
+    }
 
-
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Images");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrive_image);
         fab = findViewById(R.id.fab);
+
+        calendarView=findViewById(R.id.calendarView);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -51,22 +62,35 @@ public class RetriveImage extends AppCompatActivity {
         adapter = new MyAdapter(this, dataList);
         recyclerView.setAdapter(adapter);
 
-
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    DataClass dataClass = dataSnapshot.getValue(DataClass.class);
-                    dataList.add(dataClass);
-                }
-                adapter.notifyDataSetChanged();
-            }
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+                stringDateSelected = Integer.toString(i) + Integer.toString(i1+1) + Integer.toString(i2);
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(stringDateSelected);
+                databaseReference.addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        dataList.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                            DataClass dataClass = dataSnapshot.getValue(DataClass.class);
+                            dataList.add(dataClass);
+
+                        }
+
+                        adapter.notifyDataSetChanged();
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
             }
         });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
