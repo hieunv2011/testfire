@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +28,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -71,19 +75,19 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 public class UploadImage extends AppCompatActivity {
-    private FloatingActionButton uploadButton;
+    private FloatingActionButton uploadButton,backButton;
     private ImageView uploadImage;
     EditText uploadCaption;
     ProgressBar progressBar;
+    ImageButton addressBtn;
     private Uri imageUri;
     FirebaseAuth auth;
     FirebaseUser user;
     CheckBox checkBox;
     FusedLocationProviderClient fusedLocationProviderClient;
-    TextView address;
-
+    TextView address,textUser;
+    String userName, email, nameUser;
     Button getLocation;
-
     boolean checkState=false;
 
     final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.CANADA);
@@ -97,6 +101,11 @@ public class UploadImage extends AppCompatActivity {
     // Gắn biến ngày vào chuỗi
     String dateString = sdf.format(currentDate);
 
+    SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/YY", Locale.getDefault());
+    // Gắn biến ngày vào chuỗi
+    String fmtString = fmt.format(currentDate);
+    String d="Đã điểm danh ngày "+fmtString;
+
     public void onBackPressed() {
         // Quay về màn hình trước đó
         Intent intent = new Intent(this, Select.class);
@@ -108,9 +117,9 @@ public class UploadImage extends AppCompatActivity {
 
     private final static int REQUEST_CODE = 100;
 
-    DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReferenceFromUrl("https://test-99e7b-default-rtdb.firebaseio.com/");
     final  private DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("user");
-    final  private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(fileName);
+    final  private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+    final  private DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference(fileName);
     final private StorageReference storageReference = FirebaseStorage.getInstance().getReference(date+' '+dateString);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +128,15 @@ public class UploadImage extends AppCompatActivity {
         //lattitude = findViewById(R.id.lattitude);
         //longitude = findViewById(R.id.longitude);
         address = findViewById(R.id.address);
+        addressBtn=findViewById(R.id.addressBtn);
+        auth = FirebaseAuth.getInstance();
+        backButton=findViewById(R.id.backButton);
         //city = findViewById(R.id.city);
         //country = findViewById(R.id.country);
         getLocation = findViewById(R.id.getLocation);
-        checkBox =findViewById(R.id.checkBox);
+        textUser=findViewById(R.id.textUser);
+        //checkBox =findViewById(R.id.checkBox);
+//        checkDay =findViewById(R.id.checkDay);
         //pushBtn=findViewById(R.id.pushBtn);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         uploadButton = findViewById(R.id.uploadButton);
@@ -148,25 +162,52 @@ public class UploadImage extends AppCompatActivity {
                 }
         );
 
+        user = auth.getCurrentUser();
+        String userId=user.getUid();
+        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Student student = snapshot.getValue(Student.class);
+                if(student != null ){
+                    String studentName= student.getStudentName();
+                    textUser.setText(studentName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(UploadImage.this, "fail",Toast.LENGTH_LONG).show();
+            }
+        });
 
         //lay vi tri
-        address.setOnClickListener(new View.OnClickListener() {
+        addressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                addressBtn.setVisibility(View.GONE);
                 getLastLocation();
 
             }
         });
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                checkState=isChecked;
+//                Toast.makeText(UploadImage.this,"vaix ca loz", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//            // Khi trạng thái của CheckBox thay đổi, kiểm tra và cập nhật trạng thái của nút
+//            uploadImage.setEnabled(isChecked);
+//        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                checkState=isChecked;
+            public void onClick(View v) {
+                Intent intent = new Intent(UploadImage.this, Select.class);
+                startActivity(intent);
+                finish();
             }
-        });
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Khi trạng thái của CheckBox thay đổi, kiểm tra và cập nhật trạng thái của nút
-            uploadImage.setEnabled(isChecked);
         });
 
         uploadImage.setOnClickListener(new View.OnClickListener() {
@@ -279,6 +320,7 @@ public class UploadImage extends AppCompatActivity {
 
         String caption = uploadCaption.getText().toString();
         String location = address.getText().toString();
+
         auth = FirebaseAuth.getInstance();
         user=auth.getCurrentUser();
         String uid = user.getEmail();
@@ -295,14 +337,53 @@ public class UploadImage extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         DataClass dataClass = new DataClass(uri.toString(), caption,location);
                         String key = databaseReference.push().getKey();
-                        auth = FirebaseAuth.getInstance();
                         String caption1 = uploadCaption.getText().toString();
-                        user=auth.getCurrentUser();
-                        String ui=user.toString();
-                        databaseReference.child(key).setValue(dataClass);
-                        databaseReference.child(key).child("diachi").setValue(address.getText().toString());
-                        databaseReference.child(key).child("checkState").setValue(String.valueOf(checkState));
-                        databaseReference.child(key).child("uid").setValue(ui);
+
+                        if(user==null){
+                            Intent intent = new Intent(getApplicationContext(),Select.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else {
+                            userName = user.getUid().toString();
+                        }
+
+
+                        user = auth.getCurrentUser();
+                        String userId=user.getUid();
+                        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Student student = snapshot.getValue(Student.class);
+                                if(student != null ){
+                                    String studentName= student.getStudentName();
+                                    databaseReference1.child(userName).child("studentName").setValue(studentName);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(UploadImage.this, "fail",Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+
+
+                        databaseReference.child(userName).child("status").setValue(d);
+                        databaseReference1.child(userName).setValue(dataClass);
+                        databaseReference1.child(userName).child("diachi").setValue(address.getText().toString());
+                        databaseReference1.child(userName).child(dateString).child("checkStatus").setValue("da diem danh");
+
+
+
+                        //databaseReference1.child(userName).child(fileName).child("uid").setValue(uid);
+
+
+
+
+
+                       //databaseReference1.child(key).child("diachi").setValue(address.getText().toString());
+
+
                         progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(UploadImage.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(UploadImage.this, Select.class);

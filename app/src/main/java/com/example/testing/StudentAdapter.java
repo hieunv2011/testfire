@@ -39,7 +39,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
         holder.lastName.setText(student.getStudentId());
         holder.age.setText(student.getAge());
         holder.email.setText(student.getEmail());
-
+        holder.status.setText(student.getStatus());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView firstName, lastName, age,email;
+        TextView firstName, lastName, age,email,status;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,6 +57,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
             firstName = itemView.findViewById(R.id.tvfirstName);
             lastName = itemView.findViewById(R.id.tvlastName);
             age = itemView.findViewById(R.id.tvage);
+            status=itemView.findViewById(R.id.tvStatus);
 
         }
     }

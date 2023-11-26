@@ -38,6 +38,14 @@
             android:text="caption"
             android:textColor="@color/lavender"
             android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/recyclerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="name"
+            android:textColor="@color/lavender"
+            android:textSize="12dp" />
     </LinearLayout>
 
 

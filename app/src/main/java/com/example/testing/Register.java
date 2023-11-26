@@ -91,7 +91,11 @@ public class Register extends AppCompatActivity {
                 databaseReference.child("users").child(username).child("password").setValue(password);
                 databaseReference.child("users").child(username).child("age").setValue(age);
                 databaseReference.child("users").child(username).child("studentId").setValue(username);
-                databaseReference.child("users").child(username).child("studentName").setValue(username);
+                databaseReference.child("users").child(username).child("studentName").setValue(name);
+//                databaseReference.child(email).child("password").setValue(password);
+//                databaseReference.child(email).child("age").setValue(age);
+//                databaseReference.child(email).child("studentId").setValue(username);
+//                databaseReference.child(email).child("studentName").setValue(username);
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return;

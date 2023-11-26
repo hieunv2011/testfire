@@ -94,7 +94,7 @@ public class RetriveImage extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RetriveImage.this, UploadImage.class);
+                Intent intent = new Intent(RetriveImage.this, Select.class);
                 startActivity(intent);
                 finish();
             }

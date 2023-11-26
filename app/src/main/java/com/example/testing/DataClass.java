@@ -1,7 +1,7 @@
 package com.example.testing;
 
 public class DataClass {
-    private String imageURL, caption,location;
+    private String imageURL, caption,location,studentName;
     public DataClass(){
     }
     public String getImageURL() {
@@ -14,6 +14,7 @@ public class DataClass {
         return caption;
     }
     public String getLocation(){return location;}
+    public  String getStudentName(){return studentName;}
     public void setCaption(String caption) {
         this.caption = caption;
     }

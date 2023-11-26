@@ -1,48 +1,97 @@
 package com.example.testing;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Select extends AppCompatActivity {
 
-    TextView email;
+    TextView studentNum,textUser;
     ImageButton btnAttendance,btnList,btnImage,btnAlarm,logout;
     FirebaseAuth auth;
     FirebaseUser user;
 
+    String userName, userEmail,userId;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
         auth = FirebaseAuth.getInstance();
-        email =findViewById(R.id.email);
+        studentNum =findViewById(R.id.studentNum);
         btnAttendance=findViewById(R.id.btnAttendance);
         btnImage=findViewById(R.id.btnImage);
         btnAlarm=findViewById(R.id.btnAlarm);
         btnList=findViewById(R.id.btnList);
         logout=findViewById(R.id.logout);
-
-
+        textUser=findViewById(R.id.textUser);
+        //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userName);
         user = auth.getCurrentUser();
-        if(user==null){
-            Intent intent = new Intent(getApplicationContext(),Login.class);
-            startActivity(intent);
-            finish();
-        }
-        else {
-            email.setText(user.getEmail());
-        }
+        userId=user.getUid();
+        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Student student = snapshot.getValue(Student.class);
+                if(student != null ){
+                    String studentN= student.getStudentId();
+                    studentNum.setText(studentN);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Select.this, "fail",Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+//        if(user==null){
+//            Intent intent = new Intent(getApplicationContext(),Login.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//        else {
+//            textUser.setText(user.getUid());
+//        }
+        userId=user.getUid();
+        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Student student = snapshot.getValue(Student.class);
+                if(student != null ){
+                    String studentName= student.getStudentName();
+                        textUser.setText(studentName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Select.this, "fail",Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
 
         btnAttendance.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -54,7 +103,12 @@ public class Select extends AppCompatActivity {
         }
         ));
 
-
+        btnAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoUrl("https://www.youtube.com/watch?v=O33x3EyUbpc");
+            }
+        });
         btnList.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,10 +135,7 @@ public class Select extends AppCompatActivity {
                             }
                         }).setNegativeButton("Không", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        FirebaseAuth.getInstance().signOut();
                                         Intent intent = new Intent(getApplicationContext(),Select.class);
-                                        startActivity(intent);
-                                        finish();
                                     }
                                 });
 
@@ -109,4 +160,10 @@ public class Select extends AppCompatActivity {
 
 
     }
+        private void gotoUrl(String s){
+        Uri uri= Uri.parse(s);
+        startActivity(new Intent(Intent.ACTION_VIEW,uri));
+        }
+
+
 }

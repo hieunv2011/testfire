@@ -41,7 +41,8 @@
             android:layout_marginTop="444dp"
             android:text=" Đăng ký"
             android:textAlignment="center"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:visibility="gone"/>
 
     <!--email-->
     <LinearLayout
@@ -61,7 +62,7 @@
             android:ems="18"
             android:hint="Nhập email của bạn"
             android:inputType="textEmailAddress"
-            android:textColor="@color/main" />
+            android:textColor="@color/black" />
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
