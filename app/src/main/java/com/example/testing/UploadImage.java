@@ -1,11 +1,9 @@
 package com.example.testing;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -13,10 +11,10 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,40 +40,34 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import com.example.testing.databinding.ActivityUploadImageBinding;
-import com.google.firebase.storage.StorageReference;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
+
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
+
 import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+
 public class UploadImage extends AppCompatActivity {
-    private FloatingActionButton uploadButton,backButton;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private Uri cameraImageUri;
+    private ActivityResultLauncher<Intent> cameraLauncher;
+
+    private FloatingActionButton uploadButton, backButton,cameraButton;
+    ImageView imgCamera;
     private ImageView uploadImage;
     EditText uploadCaption;
     ProgressBar progressBar;
@@ -85,15 +77,15 @@ public class UploadImage extends AppCompatActivity {
     FirebaseUser user;
     CheckBox checkBox;
     FusedLocationProviderClient fusedLocationProviderClient;
-    TextView address,textUser;
+    TextView address, textUser;
     String userName, email, nameUser;
     Button getLocation;
-    boolean checkState=false;
+    boolean checkState = false;
 
     final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.CANADA);
     final Date now = new Date();
     final String fileName = formatter.format(now);
-    final String date= "Ngày ";
+    final String date = "Ngày ";
 
     Date currentDate = new Date();
     // Định dạng ngày theo định dạng "yyyyMMdd"
@@ -104,7 +96,8 @@ public class UploadImage extends AppCompatActivity {
     SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/YY", Locale.getDefault());
     // Gắn biến ngày vào chuỗi
     String fmtString = fmt.format(currentDate);
-    String d="Đã điểm danh ngày "+fmtString;
+    String d = "Đã điểm danh ngày " + fmtString;
+    boolean status = true;
 
     public void onBackPressed() {
         // Quay về màn hình trước đó
@@ -114,30 +107,23 @@ public class UploadImage extends AppCompatActivity {
     }
 
 
-
     private final static int REQUEST_CODE = 100;
 
-    final  private DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("user");
-    final  private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
-    final  private DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference(fileName);
-    final private StorageReference storageReference = FirebaseStorage.getInstance().getReference(date+' '+dateString);
+    final private DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("user");
+    final private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+    final private DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("attendace").child(fileName);
+    final private StorageReference storageReference = FirebaseStorage.getInstance().getReference(date + ' ' + dateString);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_image);
-        //lattitude = findViewById(R.id.lattitude);
-        //longitude = findViewById(R.id.longitude);
         address = findViewById(R.id.address);
-        addressBtn=findViewById(R.id.addressBtn);
+        addressBtn = findViewById(R.id.addressBtn);
         auth = FirebaseAuth.getInstance();
-        backButton=findViewById(R.id.backButton);
-        //city = findViewById(R.id.city);
-        //country = findViewById(R.id.country);
+        backButton = findViewById(R.id.backButton);
         getLocation = findViewById(R.id.getLocation);
-        textUser=findViewById(R.id.textUser);
-        //checkBox =findViewById(R.id.checkBox);
-//        checkDay =findViewById(R.id.checkDay);
-        //pushBtn=findViewById(R.id.pushBtn);
+        textUser = findViewById(R.id.textUser);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         uploadButton = findViewById(R.id.uploadButton);
         uploadCaption = findViewById(R.id.uploadCaption);
@@ -151,7 +137,7 @@ public class UploadImage extends AppCompatActivity {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK){
+                        if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
                             imageUri = data.getData();
                             uploadImage.setImageURI(imageUri);
@@ -163,20 +149,20 @@ public class UploadImage extends AppCompatActivity {
         );
 
         user = auth.getCurrentUser();
-        String userId=user.getUid();
+        String userId = user.getUid();
         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Student student = snapshot.getValue(Student.class);
-                if(student != null ){
-                    String studentName= student.getStudentName();
+                if (student != null) {
+                    String studentName = student.getStudentName();
                     textUser.setText(studentName);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(UploadImage.this, "fail",Toast.LENGTH_LONG).show();
+                Toast.makeText(UploadImage.this, "fail", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -213,7 +199,6 @@ public class UploadImage extends AppCompatActivity {
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent photoPicker = new Intent();
                 photoPicker.setAction(Intent.ACTION_GET_CONTENT);
                 photoPicker.setType("image/*");
@@ -223,10 +208,10 @@ public class UploadImage extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (imageUri != null){
+                if (imageUri != null) {
 
                     uploadToFirebase(imageUri);
-                } else  {
+                } else {
                     Toast.makeText(UploadImage.this, "Please select image", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -234,11 +219,9 @@ public class UploadImage extends AppCompatActivity {
     }
 
 
+    private void getLastLocation() {
 
-
-    private void getLastLocation(){
-
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
 
             fusedLocationProviderClient.getLastLocation()
@@ -246,8 +229,7 @@ public class UploadImage extends AppCompatActivity {
                         @Override
                         public void onSuccess(Location location) {
 
-                            if (location != null){
-
+                            if (location != null) {
 
 
                                 try {
@@ -255,7 +237,7 @@ public class UploadImage extends AppCompatActivity {
                                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                                     //lattitude.setText("Lattitude: "+addresses.get(0).getLatitude());
                                     //longitude.setText("Longitude: "+addresses.get(0).getLongitude());
-                                    address.setText("Vị trí hiện tại: "+addresses.get(0).getAddressLine(0));
+                                    address.setText("Vị trí hiện tại: " + addresses.get(0).getAddressLine(0));
                                     //city.setText("City: "+addresses.get(0).getLocality());
                                     //country.setText("Country: "+addresses.get(0).getCountryName());
 
@@ -271,7 +253,7 @@ public class UploadImage extends AppCompatActivity {
                     });
 
 
-        }else {
+        } else {
 
             askPermission();
 
@@ -283,7 +265,7 @@ public class UploadImage extends AppCompatActivity {
 
     private void askPermission() {
 
-        ActivityCompat.requestPermissions(UploadImage.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
+        ActivityCompat.requestPermissions(UploadImage.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
 
 
     }
@@ -291,20 +273,19 @@ public class UploadImage extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull @org.jetbrains.annotations.NotNull String[] permissions, @NonNull @org.jetbrains.annotations.NotNull int[] grantResults) {
 
-        if (requestCode == REQUEST_CODE){
+        if (requestCode == REQUEST_CODE) {
 
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
 
                 getLastLocation();
 
-            }else {
+            } else {
 
 
-                Toast.makeText(UploadImage.this,"Please provide the required permission",Toast.LENGTH_SHORT).show();
+                Toast.makeText(UploadImage.this, "Please provide the required permission", Toast.LENGTH_SHORT).show();
 
             }
-
 
 
         }
@@ -313,20 +294,19 @@ public class UploadImage extends AppCompatActivity {
     }
 
 
-
     //Outside onCreate
-    private void uploadToFirebase(Uri uri){
+    private void uploadToFirebase(Uri uri) {
 
 
         String caption = uploadCaption.getText().toString();
         String location = address.getText().toString();
 
         auth = FirebaseAuth.getInstance();
-        user=auth.getCurrentUser();
+        user = auth.getCurrentUser();
         String uid = user.getEmail();
 
 
-        final StorageReference imageReference = storageReference.child(uid+ "." + getFileExtension(uri));
+        final StorageReference imageReference = storageReference.child(uid + "." + getFileExtension(uri));
         imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
             @Override
@@ -335,55 +315,42 @@ public class UploadImage extends AppCompatActivity {
                 imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        DataClass dataClass = new DataClass(uri.toString(), caption,location);
+                        DataClass dataClass = new DataClass(uri.toString(), caption, location);
                         String key = databaseReference.push().getKey();
                         String caption1 = uploadCaption.getText().toString();
 
-                        if(user==null){
-                            Intent intent = new Intent(getApplicationContext(),Select.class);
+                        if (user == null) {
+                            Intent intent = new Intent(getApplicationContext(), Select.class);
                             startActivity(intent);
                             finish();
-                        }
-                        else {
+                        } else {
                             userName = user.getUid().toString();
                         }
 
 
                         user = auth.getCurrentUser();
-                        String userId=user.getUid();
+                        String userId = user.getUid();
                         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 Student student = snapshot.getValue(Student.class);
-                                if(student != null ){
-                                    String studentName= student.getStudentName();
+                                if (student != null) {
+                                    String studentName = student.getStudentName();
                                     databaseReference1.child(userName).child("studentName").setValue(studentName);
                                 }
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-                                Toast.makeText(UploadImage.this, "fail",Toast.LENGTH_LONG).show();
+                                Toast.makeText(UploadImage.this, "fail", Toast.LENGTH_LONG).show();
                             }
                         });
 
 
-
-                        databaseReference.child(userName).child("status").setValue(d);
+                        databaseReference.child(userName).child("status").setValue(fileName);
                         databaseReference1.child(userName).setValue(dataClass);
                         databaseReference1.child(userName).child("diachi").setValue(address.getText().toString());
                         databaseReference1.child(userName).child(dateString).child("checkStatus").setValue("da diem danh");
-
-
-
-                        //databaseReference1.child(userName).child(fileName).child("uid").setValue(uid);
-
-
-
-
-
-                       //databaseReference1.child(key).child("diachi").setValue(address.getText().toString());
-
-
                         progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(UploadImage.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(UploadImage.this, Select.class);
@@ -405,7 +372,8 @@ public class UploadImage extends AppCompatActivity {
             }
         });
     }
-    private String getFileExtension(Uri fileUri){
+
+    private String getFileExtension(Uri fileUri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(contentResolver.getType(fileUri));

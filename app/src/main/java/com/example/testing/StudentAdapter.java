@@ -6,16 +6,22 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHolder>  {
     Context context;
-
+    final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.CANADA);
+    final Date now = new Date();
+    final String fileName = formatter.format(now);
     ArrayList<Student> list;
 
 
@@ -39,7 +45,15 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
         holder.lastName.setText(student.getStudentId());
         holder.age.setText(student.getAge());
         holder.email.setText(student.getEmail());
-        holder.status.setText(student.getStatus());
+//        holder.status.setText(student.getStatus());
+        if (student.getStatus() != null && student.getStatus().equalsIgnoreCase(fileName)) {
+            holder.status.setText("True");
+            holder.checkBox.setChecked(true);
+        } else {
+            holder.status.setText("False");
+            holder.checkBox.setChecked(false);
+        }
+
     }
 
     @Override
@@ -50,6 +64,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView firstName, lastName, age,email,status;
+        CheckBox checkBox;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,6 +73,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
             lastName = itemView.findViewById(R.id.tvlastName);
             age = itemView.findViewById(R.id.tvage);
             status=itemView.findViewById(R.id.tvStatus);
+            checkBox = itemView.findViewById(R.id.checkBox);
 
         }
     }

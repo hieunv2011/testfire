@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.TextView;
@@ -65,8 +66,21 @@ public class RetriveImage extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                stringDateSelected = Integer.toString(i) + Integer.toString(i1+1) + Integer.toString(i2);
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(stringDateSelected);
+//                stringDateSelected = Integer.toString(i) + Integer.toString(i1+1) + Integer.toString(i2);
+                // Tăng i1 lên 1 vì i1 biểu diễn tháng từ 0-11
+                i1 += 1;
+
+                // Định dạng ngày tháng
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
+
+                // Tạo một đối tượng Date từ ngày được chọn
+                Date selectedDate = new Date(i - 1900, i1 - 1, i2);
+
+                // Format thành chuỗi "yyyyMMdd"
+                stringDateSelected = sdf.format(selectedDate);
+                Log.d("RetriveImage", "Selected Date: " + stringDateSelected);
+
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("attendace").child(stringDateSelected);
                 databaseReference.addValueEventListener(new ValueEventListener() {
 
                     @Override
