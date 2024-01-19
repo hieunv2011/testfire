@@ -17,7 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Da diem danh hom nay"
-            android:textColor="@color/main"/>
+            android:textColor="@color/main"
+            android:visibility="gone"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -22,6 +22,7 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +36,7 @@ public class RetriveImage extends AppCompatActivity {
     FloatingActionButton fab;
     private RecyclerView recyclerView;
     private int number;
+    FirebaseAuth mAuth;
     private ArrayList<DataClass> dataList;
     private MyAdapter adapter;
     private CalendarView calendarView;
@@ -108,10 +110,11 @@ public class RetriveImage extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RetriveImage.this, Select.class);
+                Intent intent = new Intent(RetriveImage.this, TeacherDashboard.class);
                 startActivity(intent);
                 finish();
             }
         });
+
     }
 }

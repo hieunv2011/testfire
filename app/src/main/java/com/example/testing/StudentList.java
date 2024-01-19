@@ -72,11 +72,8 @@ public class StudentList extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-
                     Student student = dataSnapshot.getValue(Student.class);
                     list.add(student);
-
-
                 }
                 studentAdapter.notifyDataSetChanged();
 

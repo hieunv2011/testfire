@@ -276,20 +276,11 @@ public class UploadImage extends AppCompatActivity {
         if (requestCode == REQUEST_CODE) {
 
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-
                 getLastLocation();
-
             } else {
-
-
                 Toast.makeText(UploadImage.this, "Please provide the required permission", Toast.LENGTH_SHORT).show();
-
             }
-
-
         }
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
