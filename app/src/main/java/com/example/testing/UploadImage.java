@@ -234,21 +234,16 @@ public class UploadImage extends AppCompatActivity {
 
 
     private void getLastLocation() {
-
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-
             fusedLocationProviderClient.getLastLocation()
                     .addOnSuccessListener(new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-
                             if (location != null) {
                                 Geocoder geocoder = new Geocoder(UploadImage.this, Locale.getDefault());
                                 List<Address> addresses = null;
                                 try {
                                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
                                     //lattitude.setText("Lattitude: "+addresses.get(0).getLatitude());
                                     //longitude.setText("Longitude: "+addresses.get(0).getLongitude());
                                     diachi.setText("Longitude: "+addresses.get(0).getLongitude());
@@ -258,30 +253,17 @@ public class UploadImage extends AppCompatActivity {
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
-
-
                             }
-
                         }
                     });
-
-
         } else {
-
             askPermission();
-
-
         }
-
-
     }
 
     private void askPermission() {
-
         ActivityCompat.requestPermissions(UploadImage.this, new String[]
                 {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-
-
     }
 
     @Override
