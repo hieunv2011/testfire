@@ -1,6 +1,7 @@
 package com.example.testing;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -77,7 +79,7 @@ public class UploadImage extends AppCompatActivity {
     FirebaseUser user;
     CheckBox checkBox;
     FusedLocationProviderClient fusedLocationProviderClient;
-    TextView address, textUser;
+    TextView address, textUser, diachi;
     String userName, email, nameUser;
     Button getLocation;
     boolean checkState = false;
@@ -122,6 +124,9 @@ public class UploadImage extends AppCompatActivity {
         addressBtn = findViewById(R.id.addressBtn);
         auth = FirebaseAuth.getInstance();
         backButton = findViewById(R.id.backButton);
+
+        diachi = findViewById(R.id.diachi);
+
         getLocation = findViewById(R.id.getLocation);
         textUser = findViewById(R.id.textUser);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -132,21 +137,21 @@ public class UploadImage extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
 
         //
-        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getData();
-                            imageUri = data.getData();
-                            uploadImage.setImageURI(imageUri);
-                        } else {
-                            Toast.makeText(UploadImage.this, "No Image Selected", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
+//        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                new ActivityResultCallback<ActivityResult>() {
+//                    @Override
+//                    public void onActivityResult(ActivityResult result) {
+//                        if (result.getResultCode() == Activity.RESULT_OK) {
+//                            Intent data = result.getData();
+//                            imageUri = data.getData();
+//                            uploadImage.setImageURI(imageUri);
+//                        } else {
+//                            Toast.makeText(UploadImage.this, "No Image Selected", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }
+//        );
 
         user = auth.getCurrentUser();
         String userId = user.getUid();
@@ -190,27 +195,36 @@ public class UploadImage extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UploadImage.this, Select.class);
+                Intent intent = new Intent(UploadImage.this, StudentDashboard.class);
                 startActivity(intent);
                 finish();
             }
         });
 
         uploadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent photoPicker = new Intent();
-                photoPicker.setAction(Intent.ACTION_GET_CONTENT);
-                photoPicker.setType("image/*");
-                activityResultLauncher.launch(photoPicker);
-            }
+//            @Override
+//            public void onClick(View view) {
+//                Intent photoPicker = new Intent();
+//                photoPicker.setAction(Intent.ACTION_GET_CONTENT);
+//                photoPicker.setType("image/*");
+//                activityResultLauncher.launch(photoPicker);
+//            }
+                @Override
+                public void onClick(View v) {
+                    ImagePicker.with(UploadImage.this)
+                            .crop()	    			//Crop image(Optional), Check Customization for more option
+                            .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                            .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                            .start();
+                }
         });
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (imageUri != null) {
 
-                    uploadToFirebase(imageUri);
+//                    uploadToFirebase(imageUri);
+                    uploadImageToFirebase(imageUri);
                 } else {
                     Toast.makeText(UploadImage.this, "Please select image", Toast.LENGTH_SHORT).show();
                 }
@@ -230,20 +244,19 @@ public class UploadImage extends AppCompatActivity {
                         public void onSuccess(Location location) {
 
                             if (location != null) {
-
-
+                                Geocoder geocoder = new Geocoder(UploadImage.this, Locale.getDefault());
+                                List<Address> addresses = null;
                                 try {
-                                    Geocoder geocoder = new Geocoder(UploadImage.this, Locale.getDefault());
-                                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
                                     //lattitude.setText("Lattitude: "+addresses.get(0).getLatitude());
                                     //longitude.setText("Longitude: "+addresses.get(0).getLongitude());
+                                    diachi.setText("Longitude: "+addresses.get(0).getLongitude());
                                     address.setText("Vị trí hiện tại: " + addresses.get(0).getAddressLine(0));
                                     //city.setText("City: "+addresses.get(0).getLocality());
                                     //country.setText("Country: "+addresses.get(0).getCountryName());
-
-
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    throw new RuntimeException(e);
                                 }
 
 
@@ -265,7 +278,8 @@ public class UploadImage extends AppCompatActivity {
 
     private void askPermission() {
 
-        ActivityCompat.requestPermissions(UploadImage.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+        ActivityCompat.requestPermissions(UploadImage.this, new String[]
+                {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
 
 
     }
@@ -286,8 +300,110 @@ public class UploadImage extends AppCompatActivity {
 
 
     //Outside onCreate
-    private void uploadToFirebase(Uri uri) {
+//    private void uploadToFirebase(Uri uri) {
+//
+//
+//        String caption = uploadCaption.getText().toString();
+//        String location = address.getText().toString();
+//
+//        auth = FirebaseAuth.getInstance();
+//        user = auth.getCurrentUser();
+//        String uid = user.getEmail();
+//
+//
+//        final StorageReference imageReference = storageReference.child(uid + "." + getFileExtension(uri));
+//        imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//
+//                imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                    @Override
+//                    public void onSuccess(Uri uri) {
+//                        DataClass dataClass = new DataClass(uri.toString(), caption, location);
+//                        String key = databaseReference.push().getKey();
+//                        String caption1 = uploadCaption.getText().toString();
+//
+//                        if (user == null) {
+//                            Intent intent = new Intent(getApplicationContext(), Select.class);
+//                            startActivity(intent);
+//                            finish();
+//                        } else {
+//                            userName = user.getUid().toString();
+//                        }
+//
+//
+//                        user = auth.getCurrentUser();
+//                        String userId = user.getUid();
+//                        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                Student student = snapshot.getValue(Student.class);
+//                                if (student != null) {
+//                                    String studentName = student.getStudentName();
+//                                    databaseReference1.child(userName).child("studentName").setValue(studentName);
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//                                Toast.makeText(UploadImage.this, "fail", Toast.LENGTH_LONG).show();
+//                            }
+//                        });
+//
+//
+//                        databaseReference.child(userName).child("status").setValue(fileName);
+//                        databaseReference1.child(userName).setValue(dataClass);
+//                        databaseReference1.child(userName).child("diachi").setValue(address.getText().toString());
+//                        databaseReference1.child(userName).child(dateString).child("checkStatus").setValue("da diem danh");
+//                        progressBar.setVisibility(View.INVISIBLE);
+//                        Toast.makeText(UploadImage.this, "Uploaded", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(UploadImage.this, Select.class);
+//                        startActivity(intent);
+//                        finish();
+//                    }
+//                });
+//            }
+//        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+//                progressBar.setVisibility(View.VISIBLE);
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                progressBar.setVisibility(View.INVISIBLE);
+//                Toast.makeText(UploadImage.this, "Failed", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
+    private String getFileExtension(Uri fileUri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(contentResolver.getType(fileUri));
+    }
+//Trường
+@Override
+protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    // Check if data is not null and resultCode is RESULT_OK
+    if (data != null && resultCode == RESULT_OK) {
+        // Get the selected image URI
+        imageUri = data.getData();
+
+        // Check if the URI is not null before setting it to the ImageView
+        if (imageUri != null) {
+            uploadImage.setImageURI(imageUri);
+        }
+    }
+}
+private String getCurrentTimestamp() {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+    return sdf.format(new Date());
+}
+private void uploadImageToFirebase(Uri imageUri) {
 
         String caption = uploadCaption.getText().toString();
         String location = address.getText().toString();
@@ -296,14 +412,20 @@ public class UploadImage extends AppCompatActivity {
         user = auth.getCurrentUser();
         String uid = user.getEmail();
 
+    if (imageUri != null) {
+        // Create a reference to "images/<FILENAME>.jpg"
+        StorageReference imageRef = storageReference.child(uid + "." + getFileExtension(imageUri));
 
-        final StorageReference imageReference = storageReference.child(uid + "." + getFileExtension(uri));
-        imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        // Upload the file to Firebase Storage
+        UploadTask uploadTask = imageRef.putFile(imageUri);
+
+        // Register observers to listen for when the upload is successful or fails
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         DataClass dataClass = new DataClass(uri.toString(), caption, location);
@@ -319,7 +441,7 @@ public class UploadImage extends AppCompatActivity {
                         }
 
 
-                        user = auth.getCurrentUser();
+//                        user = auth.getCurrentUser();
                         String userId = user.getUid();
                         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -361,12 +483,24 @@ public class UploadImage extends AppCompatActivity {
                 progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(UploadImage.this, "Failed", Toast.LENGTH_SHORT).show();
             }
+
+
+
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                // Image uploaded successfully
+//                // You can get the download URL from taskSnapshot.getDownloadUrl()
+//                // and use it as needed, for example, to save the URL to a database
+//                // or display the image in your app
+//                Toast.makeText(UploadImage.this,"Tải ảnh thành công",Toast.LENGTH_SHORT).show();
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                // Handle unsuccessful uploads
+//                Toast.makeText(UploadImage.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
         });
     }
-
-    private String getFileExtension(Uri fileUri) {
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(contentResolver.getType(fileUri));
-    }
+}
 }

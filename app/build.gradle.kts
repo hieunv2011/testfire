@@ -46,6 +46,9 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.14.2")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
     implementation ("com.makeramen:roundedimageview:2.3.0")
+    //Location library
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+    //Library camera&gallery
+    implementation ("com.github.dhaval2404:imagepicker:2.1")
 }

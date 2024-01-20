@@ -179,6 +179,12 @@
             android:backgroundTint="@color/opacity"
             android:src="@drawable/baseline_arrow_back_ios_new_24"
             app:tint="@color/white" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dia chi"
+            android:layout_below="@id/relativeLayout"
+            android:id="@+id/diachi"/>
 
     </RelativeLayout>
 </LinearLayout>
