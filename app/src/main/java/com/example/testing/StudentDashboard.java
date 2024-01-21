@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 public class StudentDashboard extends AppCompatActivity {
 
     TextView studentNum,textUser;
-    ImageButton btnAttendance,btnList,btnImage,btnAlarm,logout,yt;
+    ImageButton btnAttendance,btnList,btnImage,logout,yt;
     FirebaseAuth auth;
     FirebaseUser user;
 
@@ -39,12 +39,10 @@ public class StudentDashboard extends AppCompatActivity {
         studentNum =findViewById(R.id.studentNum);
         btnAttendance=findViewById(R.id.btnAttendance);
         btnImage=findViewById(R.id.btnImage);
-//        btnAlarm=findViewById(R.id.btnAlarm);
         yt = findViewById(R.id.yt);
         btnList=findViewById(R.id.btnList);
         logout=findViewById(R.id.logout);
         textUser=findViewById(R.id.textUser);
-        //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userName);
         user = auth.getCurrentUser();
         userId=user.getUid();
         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {

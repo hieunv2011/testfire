@@ -32,9 +32,6 @@
         <activity
             android:name=".TeacherLogin"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".List"-->
-<!--            android:exported="false" />-->
         <activity
             android:name=".Select"
             android:exported="false" />

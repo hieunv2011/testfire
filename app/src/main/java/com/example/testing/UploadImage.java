@@ -289,7 +289,7 @@ private void uploadImageToFirebase(Uri imageUri) {
                         String caption1 = uploadCaption.getText().toString();
 
                         if (user == null) {
-                            Intent intent = new Intent(getApplicationContext(), Select.class);
+                            Intent intent = new Intent(getApplicationContext(), StudentDashboard.class);
                             startActivity(intent);
                             finish();
                         } else {
@@ -319,7 +319,7 @@ private void uploadImageToFirebase(Uri imageUri) {
 //                        databaseReference1.child(userName).child(dateString).child("checkStatus").setValue("da diem danh");
                         progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(UploadImage.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(UploadImage.this, Select.class);
+                        Intent intent = new Intent(UploadImage.this, StudentDashboard.class);
                         startActivity(intent);
                         finish();
                     }

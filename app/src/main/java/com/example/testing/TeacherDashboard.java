@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 public class TeacherDashboard extends AppCompatActivity implements SensorEventListener {
 
     TextView studentNum,textUser;
-    ImageButton btnAttendance,btnList,btnImage,btnAlarm,logout;
+    ImageButton btnAttendance,btnList,btnImage,yt,logout;
     FirebaseAuth auth;
     FirebaseUser user;
     ImageButton btnCheckWifi;
@@ -38,7 +38,7 @@ public class TeacherDashboard extends AppCompatActivity implements SensorEventLi
     private Sensor lightSensor;
     private float currentLightValue = 0.0f; // Lưu giá trị cảm biến ánh sáng
     String userName, userEmail,userId;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("teacher");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +48,14 @@ public class TeacherDashboard extends AppCompatActivity implements SensorEventLi
         studentNum =findViewById(R.id.studentNum);
         btnAttendance=findViewById(R.id.btnAttendance);
         btnImage=findViewById(R.id.btnImage);
-        btnAlarm=findViewById(R.id.btnAlarm);
+        yt = findViewById(R.id.yt);
         btnList=findViewById(R.id.btnList);
         logout=findViewById(R.id.logout);
         textUser=findViewById(R.id.textUser);
         //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userName);
         btnCheckWifi = findViewById(R.id.btnCheckWifi);
         btnBrightness = findViewById(R.id.btnBrightness);
-
-        // Set up sensor
+all        // Set up sensor
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
@@ -121,10 +120,6 @@ public class TeacherDashboard extends AppCompatActivity implements SensorEventLi
             }
         });
 
-
-
-
-
         btnAttendance.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,7 +130,7 @@ public class TeacherDashboard extends AppCompatActivity implements SensorEventLi
         }
         ));
 
-        btnAlarm.setOnClickListener(new View.OnClickListener() {
+        yt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoUrl("https://www.youtube.com/watch?v=O33x3EyUbpc");
@@ -161,7 +156,7 @@ public class TeacherDashboard extends AppCompatActivity implements SensorEventLi
                         .setPositiveButton("Đúng", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 FirebaseAuth.getInstance().signOut();
-                                Intent intent = new Intent(getApplicationContext(),Login.class);
+                                Intent intent = new Intent(getApplicationContext(),SelectRole.class);
                                 startActivity(intent);
                                 finish();
                             }
