@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         ));
 
         //Lấy tên user về màn hình chính
-
         user = auth.getCurrentUser();
         if(user==null){
             Intent intent = new Intent(getApplicationContext(),Login.class);
@@ -102,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             textView.setText(user.getEmail());
         }
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
