@@ -148,11 +148,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="AAAAAAAAAA"
+
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_marginStart="46dp"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginBottom="250dp"/>
+            android:layout_marginBottom="200dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/uploadButton"
@@ -179,12 +180,12 @@
             android:backgroundTint="@color/opacity"
             android:src="@drawable/baseline_arrow_back_ios_new_24"
             app:tint="@color/white" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="dia chi"
-            android:layout_below="@id/relativeLayout"
-            android:id="@+id/diachi"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="dia chi"-->
+<!--            android:layout_below="@id/relativeLayout"-->
+<!--            android:id="@+id/diachi"/>-->
 
     </RelativeLayout>
 </LinearLayout>

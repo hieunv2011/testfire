@@ -24,12 +24,12 @@ import com.google.firebase.database.ValueEventListener;
 public class TeacherDashboard extends AppCompatActivity {
 
     TextView studentNum,textUser;
-    ImageButton btnAttendance,btnList,btnImage,btnAlarm,logout;
+    ImageButton btnAttendance,btnList,btnImage,btnAlarm,logout,btnYt;
     FirebaseAuth auth;
     FirebaseUser user;
 
     String userName, userEmail,userId;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("teacher");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +39,13 @@ public class TeacherDashboard extends AppCompatActivity {
         studentNum =findViewById(R.id.studentNum);
         btnAttendance=findViewById(R.id.btnAttendance);
         btnImage=findViewById(R.id.btnImage);
-        btnAlarm=findViewById(R.id.btnAlarm);
+
+        btnYt = findViewById(R.id.yt);
+
         btnList=findViewById(R.id.btnList);
         logout=findViewById(R.id.logout);
         textUser=findViewById(R.id.textUser);
-        //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userName);
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userName);
         user = auth.getCurrentUser();
         userId=user.getUid();
         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -55,7 +57,6 @@ public class TeacherDashboard extends AppCompatActivity {
                     studentNum.setText(studentN);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(TeacherDashboard.this, "fail",Toast.LENGTH_LONG).show();
@@ -103,7 +104,7 @@ public class TeacherDashboard extends AppCompatActivity {
         }
         ));
 
-        btnAlarm.setOnClickListener(new View.OnClickListener() {
+        btnYt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoUrl("https://www.youtube.com/watch?v=O33x3EyUbpc");
@@ -129,7 +130,7 @@ public class TeacherDashboard extends AppCompatActivity {
                         .setPositiveButton("Đúng", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 FirebaseAuth.getInstance().signOut();
-                                Intent intent = new Intent(getApplicationContext(),Login.class);
+                                Intent intent = new Intent(getApplicationContext(),SelectRole.class);
                                 startActivity(intent);
                                 finish();
                             }

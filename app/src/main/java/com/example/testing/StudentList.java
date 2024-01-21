@@ -62,7 +62,7 @@ public class StudentList extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StudentList.this, Select.class);
+                Intent intent = new Intent(StudentList.this, TeacherDashboard.class);
                 startActivity(intent);
                 finish();
             }

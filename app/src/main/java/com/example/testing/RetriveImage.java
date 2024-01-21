@@ -92,14 +92,9 @@ public class RetriveImage extends AppCompatActivity {
 
                             DataClass dataClass = dataSnapshot.getValue(DataClass.class);
                             dataList.add(dataClass);
-
                         }
-
                         adapter.notifyDataSetChanged();
-
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                     }

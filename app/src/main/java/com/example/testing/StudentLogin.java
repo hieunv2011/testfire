@@ -46,26 +46,26 @@ public class StudentLogin extends AppCompatActivity {
 //    }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-
-            // Dựa vào userId, xác định vai trò
-            if ("f4OGHI3BqmY6LkVeUkMjoaRp3D22".equals(userId)) {
-                Toast.makeText(StudentLogin.this, "Sai tài khoản/ mật khẩu", Toast.LENGTH_LONG).show();
-                finish();
-            } else {
-                Intent intent = new Intent(getApplicationContext(), StudentDashboard.class);
-                startActivity(intent);
-                finish();
-            }
-        }
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//
+//        if (currentUser != null) {
+//            String userId = currentUser.getUid();
+//
+//            // Dựa vào userId, xác định vai trò
+//            if ("f4OGHI3BqmY6LkVeUkMjoaRp3D22".equals(userId)) {
+//                Toast.makeText(StudentLogin.this, "Sai tài khoản/ mật khẩu", Toast.LENGTH_LONG).show();
+//                finish();
+//            } else {
+//                Intent intent = new Intent(getApplicationContext(), StudentDashboard.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        }
+//    }
 
 
 //    @Override
@@ -89,8 +89,6 @@ public class StudentLogin extends AppCompatActivity {
 //            }
 //        }
 //    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

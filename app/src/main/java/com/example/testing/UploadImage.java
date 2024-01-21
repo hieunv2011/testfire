@@ -125,7 +125,7 @@ public class UploadImage extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         backButton = findViewById(R.id.backButton);
 
-        diachi = findViewById(R.id.diachi);
+//        diachi = findViewById(R.id.diachi);
 
         getLocation = findViewById(R.id.getLocation);
         textUser = findViewById(R.id.textUser);
@@ -135,23 +135,6 @@ public class UploadImage extends AppCompatActivity {
         uploadImage = findViewById(R.id.uploadImage);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
-
-        //
-//        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == Activity.RESULT_OK) {
-//                            Intent data = result.getData();
-//                            imageUri = data.getData();
-//                            uploadImage.setImageURI(imageUri);
-//                        } else {
-//                            Toast.makeText(UploadImage.this, "No Image Selected", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                }
-//        );
 
         user = auth.getCurrentUser();
         String userId = user.getUid();
@@ -180,18 +163,6 @@ public class UploadImage extends AppCompatActivity {
 
             }
         });
-//        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                checkState=isChecked;
-//                Toast.makeText(UploadImage.this,"vaix ca loz", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//            // Khi trạng thái của CheckBox thay đổi, kiểm tra và cập nhật trạng thái của nút
-//            uploadImage.setEnabled(isChecked);
-//        });
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,15 +171,7 @@ public class UploadImage extends AppCompatActivity {
                 finish();
             }
         });
-
         uploadImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent photoPicker = new Intent();
-//                photoPicker.setAction(Intent.ACTION_GET_CONTENT);
-//                photoPicker.setType("image/*");
-//                activityResultLauncher.launch(photoPicker);
-//            }
                 @Override
                 public void onClick(View v) {
                     ImagePicker.with(UploadImage.this)
@@ -222,7 +185,6 @@ public class UploadImage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (imageUri != null) {
-
 //                    uploadToFirebase(imageUri);
                     uploadImageToFirebase(imageUri);
                 } else {
@@ -231,8 +193,6 @@ public class UploadImage extends AppCompatActivity {
             }
         });
     }
-
-
     private void getLastLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.getLastLocation()
@@ -246,7 +206,7 @@ public class UploadImage extends AppCompatActivity {
                                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                                     //lattitude.setText("Lattitude: "+addresses.get(0).getLatitude());
                                     //longitude.setText("Longitude: "+addresses.get(0).getLongitude());
-                                    diachi.setText("Longitude: "+addresses.get(0).getLongitude());
+//                                    diachi.setText("Longitude: "+addresses.get(0).getLongitude());
                                     address.setText("Vị trí hiện tại: " + addresses.get(0).getAddressLine(0));
                                     //city.setText("City: "+addresses.get(0).getLocality());
                                     //country.setText("Country: "+addresses.get(0).getCountryName());
@@ -260,15 +220,12 @@ public class UploadImage extends AppCompatActivity {
             askPermission();
         }
     }
-
     private void askPermission() {
         ActivityCompat.requestPermissions(UploadImage.this, new String[]
                 {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull @org.jetbrains.annotations.NotNull String[] permissions, @NonNull @org.jetbrains.annotations.NotNull int[] grantResults) {
-
         if (requestCode == REQUEST_CODE) {
 
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -279,93 +236,11 @@ public class UploadImage extends AppCompatActivity {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-
-    //Outside onCreate
-//    private void uploadToFirebase(Uri uri) {
-//
-//
-//        String caption = uploadCaption.getText().toString();
-//        String location = address.getText().toString();
-//
-//        auth = FirebaseAuth.getInstance();
-//        user = auth.getCurrentUser();
-//        String uid = user.getEmail();
-//
-//
-//        final StorageReference imageReference = storageReference.child(uid + "." + getFileExtension(uri));
-//        imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//                imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        DataClass dataClass = new DataClass(uri.toString(), caption, location);
-//                        String key = databaseReference.push().getKey();
-//                        String caption1 = uploadCaption.getText().toString();
-//
-//                        if (user == null) {
-//                            Intent intent = new Intent(getApplicationContext(), Select.class);
-//                            startActivity(intent);
-//                            finish();
-//                        } else {
-//                            userName = user.getUid().toString();
-//                        }
-//
-//
-//                        user = auth.getCurrentUser();
-//                        String userId = user.getUid();
-//                        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                Student student = snapshot.getValue(Student.class);
-//                                if (student != null) {
-//                                    String studentName = student.getStudentName();
-//                                    databaseReference1.child(userName).child("studentName").setValue(studentName);
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//                                Toast.makeText(UploadImage.this, "fail", Toast.LENGTH_LONG).show();
-//                            }
-//                        });
-//
-//
-//                        databaseReference.child(userName).child("status").setValue(fileName);
-//                        databaseReference1.child(userName).setValue(dataClass);
-//                        databaseReference1.child(userName).child("diachi").setValue(address.getText().toString());
-//                        databaseReference1.child(userName).child(dateString).child("checkStatus").setValue("da diem danh");
-//                        progressBar.setVisibility(View.INVISIBLE);
-//                        Toast.makeText(UploadImage.this, "Uploaded", Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(UploadImage.this, Select.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//                });
-//            }
-//        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-//                progressBar.setVisibility(View.VISIBLE);
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                progressBar.setVisibility(View.INVISIBLE);
-//                Toast.makeText(UploadImage.this, "Failed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
     private String getFileExtension(Uri fileUri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(contentResolver.getType(fileUri));
     }
-//Trường
 @Override
 protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -403,7 +278,6 @@ private void uploadImageToFirebase(Uri imageUri) {
 
         // Register observers to listen for when the upload is successful or fails
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
@@ -434,18 +308,15 @@ private void uploadImageToFirebase(Uri imageUri) {
                                     databaseReference1.child(userName).child("studentName").setValue(studentName);
                                 }
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
                                 Toast.makeText(UploadImage.this, "fail", Toast.LENGTH_LONG).show();
                             }
                         });
-
-
                         databaseReference.child(userName).child("status").setValue(fileName);
                         databaseReference1.child(userName).setValue(dataClass);
                         databaseReference1.child(userName).child("diachi").setValue(address.getText().toString());
-                        databaseReference1.child(userName).child(dateString).child("checkStatus").setValue("da diem danh");
+//                        databaseReference1.child(userName).child(dateString).child("checkStatus").setValue("da diem danh");
                         progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(UploadImage.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(UploadImage.this, Select.class);
@@ -465,23 +336,6 @@ private void uploadImageToFirebase(Uri imageUri) {
                 progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(UploadImage.this, "Failed", Toast.LENGTH_SHORT).show();
             }
-
-
-
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                // Image uploaded successfully
-//                // You can get the download URL from taskSnapshot.getDownloadUrl()
-//                // and use it as needed, for example, to save the URL to a database
-//                // or display the image in your app
-//                Toast.makeText(UploadImage.this,"Tải ảnh thành công",Toast.LENGTH_SHORT).show();
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                // Handle unsuccessful uploads
-//                Toast.makeText(UploadImage.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
         });
     }
 }

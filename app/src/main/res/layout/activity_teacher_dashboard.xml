@@ -158,7 +158,7 @@
             android:src="@drawable/icon3"/>
 
         <ImageButton
-            android:id="@+id/btnAlarm"
+            android:id="@+id/yt"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_alignParentTop="true"
@@ -169,7 +169,7 @@
             android:adjustViewBounds="true"
             android:background="@drawable/border_img"
             android:scaleType="centerInside"
-            android:src="@drawable/baseline_ondemand_video_24"></ImageButton>
+            android:src="@drawable/yt"></ImageButton>
     </RelativeLayout>
 
     <RelativeLayout

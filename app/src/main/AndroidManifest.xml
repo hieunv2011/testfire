@@ -27,8 +27,14 @@
             android:name=".TeacherDashboard"
             android:exported="false" />
         <activity
-            android:name=".List"
+            android:name=".StudentLogin"
             android:exported="false" />
+        <activity
+            android:name=".TeacherLogin"
+            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".List"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".Select"
             android:exported="false" />
@@ -52,6 +58,9 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SelectRole"
             android:exported="false" />
         <activity
             android:name=".splash"

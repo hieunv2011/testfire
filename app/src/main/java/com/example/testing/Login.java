@@ -88,7 +88,6 @@ public class Login extends AppCompatActivity {
         btnLogin=findViewById(R.id.btnLogin);
         textView=findViewById(R.id.registerNow);
         progressBar=findViewById(R.id.progressBar);
-
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,8 +111,6 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(Login.this, "Enter password", Toast.LENGTH_SHORT).show();
                     return;
                 }
-//
-
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -122,7 +119,6 @@ public class Login extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     FirebaseUser currentUser = mAuth.getCurrentUser();
                                     DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
-
                                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -140,7 +136,6 @@ public class Login extends AppCompatActivity {
                                                 }
                                             }
                                         }
-
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
                                             // Xử lý khi có lỗi đọc từ cơ sở dữ liệu
@@ -151,10 +146,6 @@ public class Login extends AppCompatActivity {
                                 }
                             }
                         });
-//
-
-
-
             }
         });
     }
