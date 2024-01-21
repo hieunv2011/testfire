@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="16dp"
-            android:text="Minh chứng hình ảnh"
+            android:text="@string/image_evidence_activity"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="24dp">

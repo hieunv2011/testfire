@@ -73,7 +73,7 @@
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="10dp"
             android:layout_toEndOf="@+id/tenhag"
-            android:text="Họ và tên"
+            android:text="@string/full_name"
             android:textSize="20dp" />
 
         <TextView
@@ -86,7 +86,7 @@
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="40dp"
             android:layout_toEndOf="@+id/tenhag"
-            android:text="Mã sinh viên"
+            android:text="@string/student_id"
             android:textSize="20dp">
 
         </TextView>
@@ -180,6 +180,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <ImageButton
+            android:id="@+id/btnCheckWifi"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/wifi_icon"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="onWifiButtonClick"/>
 
+        <ImageButton
+            android:id="@+id/btnBrightness"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/btnCheckWifi"
+            android:layout_marginStart="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/brightness"
+            android:contentDescription="Brightness"
+            android:background="?android:attr/selectableItemBackground" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

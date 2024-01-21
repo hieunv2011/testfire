@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="16dp"
-                android:text="Điểm danh"
+                android:text="@string/attendance_activity"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24dp">
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="200dp"
-                android:text="  Check-in:"
+                android:text="@string/check_in"
                 android:textStyle="bold"
                 android:textSize="16dp" />
 
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-28dp"
-                    android:text="    Ảnh minh chứng"
+                    android:text="@string/image_evidence"
                     android:textSize="16dp"
                     android:layout_marginRight="100dp"
                     android:textStyle="bold"/>
@@ -180,6 +180,12 @@
             android:backgroundTint="@color/opacity"
             android:src="@drawable/baseline_arrow_back_ios_new_24"
             app:tint="@color/white" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/localtion"
+            android:layout_below="@id/relativeLayout"
+            android:id="@+id/diachi"/>
 <!--        <TextView-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->

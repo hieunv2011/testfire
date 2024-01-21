@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">aHUST</string>
+    <string name="select_role">Select Role To Login</string>
+    <string name="teacher_role">Teacher</string>
+    <string name="student_role">Student</string>
+    <string name="next">Continue</string>
+    <string name="email_message">Log in with email</string>
+    <string name="hint_email">Enter your email</string>
+    <string name="password">   Password   </string>
+    <string name="hint_password">Enter your password</string>
+    <string name="login">Login</string>
+    <string name="attendance_activity">Attendance</string>
+    <string name="localtion">Location</string>
+    <string name="image_evidence">    Image evidence</string>
+    <string name="check_in">  Check in location</string>
+    <string name="full_name">Full name</string>
+    <string name="student_id">Student ID</string>
+    <string name="student_list">Student List</string>
+    <string name="student_number">Number of students</string>
+    <string name="not_attendance">Not marked attendance </string>
+    <string name="attendanced">Attendaced today</string>
+    <string name="image_evidence_activity">Image Evidence</string>
+</resources>

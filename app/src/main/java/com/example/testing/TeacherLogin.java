@@ -161,10 +161,6 @@ public class TeacherLogin extends AppCompatActivity {
                                 }
                             }
                         });
-//
-
-
-
             }
         });
     }
