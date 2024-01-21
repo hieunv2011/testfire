@@ -1,0 +1,50 @@
+<!-- activity_select_role.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
+    tools:context=".SelectRole">
+
+    <TextView
+        android:id="@+id/textViewSelectRole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng nhập với tài khoản"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
+
+    <RadioGroup
+        android:id="@+id/radioGroupRoles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewSelectRole"
+        android:layout_marginTop="16dp">
+
+        <RadioButton
+            android:id="@+id/radioButtonTeacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giáo viên"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonStudent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Học sinh"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/main"
+        android:text="Tiếp tục"
+        android:layout_below="@id/radioGroupRoles"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+</RelativeLayout>
