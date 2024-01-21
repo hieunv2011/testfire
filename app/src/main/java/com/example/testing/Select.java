@@ -27,6 +27,7 @@ public class Select extends AppCompatActivity {
     ImageButton btnAttendance,btnList,btnImage,btnAlarm,logout;
     FirebaseAuth auth;
     FirebaseUser user;
+    ImageButton btnCheckWifi;
 
     String userName, userEmail,userId;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
@@ -36,14 +37,24 @@ public class Select extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
         auth = FirebaseAuth.getInstance();
-        studentNum =findViewById(R.id.studentNum);
-        btnAttendance=findViewById(R.id.btnAttendance);
-        btnImage=findViewById(R.id.btnImage);
-        btnAlarm=findViewById(R.id.btnAlarm);
-        btnList=findViewById(R.id.btnList);
-        logout=findViewById(R.id.logout);
-        textUser=findViewById(R.id.textUser);
+        studentNum = findViewById(R.id.studentNum);
+        btnAttendance = findViewById(R.id.btnAttendance);
+        btnImage = findViewById(R.id.btnImage);
+        btnAlarm = findViewById(R.id.btnAlarm);
+        btnList = findViewById(R.id.btnList);
+        logout = findViewById(R.id.logout);
+        textUser = findViewById(R.id.textUser);
         //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userName);
+        btnCheckWifi = findViewById(R.id.btnCheckWifi);
+
+        //clickListener cho btnCheckWifi
+        btnCheckWifi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkWifiStrength();
+            }
+        });
+
         user = auth.getCurrentUser();
         userId=user.getUid();
         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -61,8 +72,6 @@ public class Select extends AppCompatActivity {
                 Toast.makeText(Select.this, "fail",Toast.LENGTH_LONG).show();
             }
         });
-
-
 
 //        if(user==null){
 //            Intent intent = new Intent(getApplicationContext(),Login.class);
@@ -88,10 +97,6 @@ public class Select extends AppCompatActivity {
                 Toast.makeText(Select.this, "fail",Toast.LENGTH_LONG).show();
             }
         });
-
-
-
-
 
         btnAttendance.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -156,14 +161,29 @@ public class Select extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
     }
-        private void gotoUrl(String s){
+    private void gotoUrl(String s){
         Uri uri= Uri.parse(s);
         startActivity(new Intent(Intent.ACTION_VIEW,uri));
+    }
+
+    //method checkWifi
+    private void checkWifiStrength() {
+        // Lấy thông tin về tình trạng WiFi và hiển thị Toast tương ứng
+        // Kiểm tra tình trạng kết nối mạng và tình trạng WiFi
+        if (NetworkUtils.isNetworkConnected(this)) {
+            int wifiStrength = NetworkUtils.getWifiStrength(this);
+
+            if (wifiStrength == NetworkUtils.WIFI_STRENGTH_STRONG) {
+                Toast.makeText(this, "Tín hiệu WiFi mạnh", Toast.LENGTH_SHORT).show();
+            } else if (wifiStrength == NetworkUtils.WIFI_STRENGTH_MODERATE) {
+                Toast.makeText(this, "Tín hiệu WiFi ổn định", Toast.LENGTH_SHORT).show();
+            } else if (wifiStrength == NetworkUtils.WIFI_STRENGTH_WEAK) {
+                Toast.makeText(this, "Tín hiệu WiFi rất yếu", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Không có kết nối mạng
+            Toast.makeText(this, "Chưa kết nối WiFi", Toast.LENGTH_SHORT).show();
         }
-
-
+    }
 }

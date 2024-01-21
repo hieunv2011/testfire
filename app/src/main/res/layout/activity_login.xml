@@ -30,16 +30,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="260dp"
-        android:text=" Đăng nhập bằng Email"
+        android:text="@string/login_message"
         android:textAlignment="center"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/registerNow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="444dp"
-            android:text=" Đăng ký"
+            android:text="Đăng ký"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:visibility="gone"/>
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:ems="18"
-            android:hint="Nhập email của bạn"
+            android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
             android:textColor="@color/black" />
     </LinearLayout>
@@ -71,7 +71,7 @@
         android:layout_marginLeft="70dp"
         android:layout_marginTop="290dp"
         android:background="#ffffff"
-        android:text="   Email   "
+        android:text="@string/email"
         android:textColor="@color/main"
         android:textSize="17sp" />
     <TextView
@@ -98,12 +98,11 @@
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nhập mật khẩu của bạn"
+            android:hint="@string/pass_hint"
             android:inputType="textPassword"
             android:background="@null"
             />
-    </LinearLayout
-        >
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -112,7 +111,7 @@
         android:layout_marginLeft="70dp"
         android:layout_marginTop="370dp"
         android:background="#ffffff"
-        android:text="   Password   "
+        android:text="@string/password"
         android:textColor="@color/main"
         android:textSize="17sp" />
     <!---->
@@ -126,16 +125,38 @@
             android:layout_marginTop="480dp"
             android:layout_marginEnd="125dp"
             android:backgroundTint="@color/main"
-
-            android:text="Login"
+            android:text="@string/login"
             android:textColor="@color/white">
-
         </Button>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/btnLogin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp">
+
+            <ImageButton
+                android:id="@+id/btnVietnamese"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/flag_vietnam"
+                android:background="?android:attr/selectableItemBackground" android:scaleType="centerInside"
+                android:onClick="showLanguageDialog"
+                android:layout_marginRight="16dp"/>
+
+            <ImageButton
+                android:id="@+id/btnEnglish"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/flag_united_kingdom"
+                android:background="?android:attr/selectableItemBackground" android:scaleType="centerInside"
+                android:onClick="showLanguageDialog"/>
+        </LinearLayout>
 
 
-
-    <!--    <EditText-->
+        <!--    <EditText-->
     <!--        android:id="@+id/editTextEmail"-->
     <!--        android:layout_width="307dp"-->
     <!--        android:layout_height="45dp"-->
@@ -184,15 +205,16 @@
 <!--            android:text="Ấn để đăng ký"-->
 <!--            android:textStyle="bold" />-->
 
+
         <ProgressBar
-                            android:id="@+id/progressBar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            app:layout_constraintBottom_toTopOf="parent"
-                            app:layout_constraintEnd_toStartOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

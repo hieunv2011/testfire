@@ -45,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         auth = FirebaseAuth.getInstance();
-        button12=findViewById(R.id.button12);
-        button13=findViewById(R.id.button13);
-        btnMap=findViewById(R.id.mapBtn);
-        button=findViewById(R.id.logout);
-        textView=findViewById(R.id.user_details);
-        button13=findViewById(R.id.button13);
-        btnStudentList=findViewById(R.id.btnStudentList);
+        button12 = findViewById(R.id.button12);
+        button13 = findViewById(R.id.button13);
+        btnMap = findViewById(R.id.mapBtn);
+        button = findViewById(R.id.logout);
+        textView = findViewById(R.id.user_details);
+        button13 = findViewById(R.id.button13);
+        btnStudentList = findViewById(R.id.btnStudentList);
 
         btnStudentList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,19 +63,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         button13.setOnClickListener((new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(),RetriveImage.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-                ));
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RetriveImage.class);
+                startActivity(intent);
+                finish();
+            }
+        }
+        ));
 
         btnMap.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Map.class);
+                Intent intent = new Intent(getApplicationContext(), Map.class);
                 startActivity(intent);
                 finish();
             }
@@ -92,9 +92,8 @@ public class MainActivity extends AppCompatActivity {
         ));
 
         //Lấy tên user về màn hình chính
-
         user = auth.getCurrentUser();
-        if(user==null){
+        if(user == null){
             Intent intent = new Intent(getApplicationContext(),Login.class);
             startActivity(intent);
             finish();
@@ -102,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             textView.setText(user.getEmail());
         }
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,5 +111,9 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        //lightsensor
+//        setContentView(R.layout.activity_main);
+//        startService(new Intent(this, LightSensorService.class));
     }
 }

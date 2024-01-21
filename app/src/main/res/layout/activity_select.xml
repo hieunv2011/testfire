@@ -24,9 +24,8 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:background="@drawable/border_bg"
-            android:src="@drawable/logo"
+            android:src="@drawable/logo"/>
 
-            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -51,8 +50,8 @@
             android:layout_marginBottom="10dp"
             android:backgroundTint="@color/main"
             android:src="@drawable/baseline_logout_24" />
-    </RelativeLayout>
 
+    </RelativeLayout>
 
 
     <RelativeLayout
@@ -73,8 +72,9 @@
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="10dp"
             android:layout_toEndOf="@+id/tenhag"
-            android:text="Họ và tên"
-            android:textSize="20dp" />
+            android:text="@string/student_name"
+            android:textSize="20dp"/>
+
 
         <TextView
             android:id="@+id/textUser"
@@ -86,7 +86,7 @@
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="40dp"
             android:layout_toEndOf="@+id/tenhag"
-            android:text="Mã sinh viên"
+            android:text="@string/student_id"
             android:textSize="20dp">
 
         </TextView>
@@ -102,6 +102,7 @@
             app:layout_constraintHorizontal_bias="0.045"
             app:layout_constraintStart_toStartOf="parent">
         </de.hdodenhof.circleimageview.CircleImageView>
+
 
     </RelativeLayout>
 
@@ -167,7 +168,9 @@
             android:adjustViewBounds="true"
             android:background="@drawable/border_img"
             android:scaleType="centerInside"
-            android:src="@drawable/baseline_ondemand_video_24"></ImageButton>
+            android:src="@drawable/baseline_ondemand_video_24">
+
+        </ImageButton>
     </RelativeLayout>
 
     <RelativeLayout
@@ -178,6 +181,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-
+        <ImageButton
+            android:id="@+id/btnCheckWifi"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/wifi_icon"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="onWifiButtonClick"/>
     </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,6 +21,6 @@ public class DataClass {
     public DataClass(String imageURL, String caption, String location) {
         this.imageURL = imageURL;
         this.caption = caption;
-        this.location =location;
+        this.location = location;
     }
 }

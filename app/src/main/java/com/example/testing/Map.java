@@ -76,7 +76,6 @@ public class Map extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void getLastLocation(){
