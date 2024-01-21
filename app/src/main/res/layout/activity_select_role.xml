@@ -13,7 +13,7 @@
         android:id="@+id/textViewSelectRole"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập với tài khoản"
+        android:text="@string/select_role"
         android:textSize="18sp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"/>
@@ -29,13 +29,13 @@
             android:id="@+id/radioButtonTeacher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Giáo viên"/>
+            android:text="@string/teacher_role"/>
 
         <RadioButton
             android:id="@+id/radioButtonStudent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Học sinh"/>
+            android:text="@string/student_role"/>
     </RadioGroup>
 
     <Button
@@ -43,8 +43,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/main"
-        android:text="Tiếp tục"
+        android:text="@string/next"
         android:layout_below="@id/radioGroupRoles"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/btnContinue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp">
+
+        <ImageButton
+            android:id="@+id/btnVietnamese"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/flag_vietnam"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="centerInside"
+            android:onClick="showLanguageDialog"
+            android:layout_marginEnd="16dp"/>
+
+        <ImageButton
+            android:id="@+id/btnEnglish"
+            android:layout_width="42dp"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="showLanguageDialog"
+            android:scaleType="centerInside"
+            android:src="@drawable/flag_united_kingdom"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
 </RelativeLayout>
+
+

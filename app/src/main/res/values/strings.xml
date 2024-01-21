@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">testing</string>
+    <string name="app_name">aHUST</string>
+    <string name="select_role">Đăng nhập với quyền</string>
+    <string name="teacher_role">Giáo viên</string>
+    <string name="student_role">Học sinh</string>
+    <string name="next">Tiếp tục</string>
+    <string name="email_message">" Đăng nhập bằng Email"</string>
+    <string name="hint_email">Nhập email của bạn</string>
+    <string name="password">"   Mật khẩu   "</string>
+    <string name="hint_password">Nhập mật khẩu của bạn</string>
+    <string name="login">Đăng nhập</string>
+    <string name="attendance_activity">Điểm danh</string>
+    <string name="localtion">Địa chỉ</string>
+    <string name="image_evidence">"    Ảnh minh chứng"</string>
+    <string name="check_in">"  Check-in vị trí"</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="student_id">Mã số sinh viên</string>
+    <string name="student_list">Danh sách sinh viên</string>
+    <string name="student_number">Có bao nhiêu học sinh</string>
+    <string name="not_attendance">"Chưa điểm danh "</string>
+    <string name="attendanced">Da diem danh hom nay</string>
+    <string name="image_evidence_activity">Minh chứng hình ảnh</string>
 </resources>

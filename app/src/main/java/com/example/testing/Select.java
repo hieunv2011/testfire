@@ -89,10 +89,6 @@ public class Select extends AppCompatActivity {
             }
         });
 
-
-
-
-
         btnAttendance.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,13 +153,9 @@ public class Select extends AppCompatActivity {
             }
         });
 
-
-
     }
         private void gotoUrl(String s){
         Uri uri= Uri.parse(s);
         startActivity(new Intent(Intent.ACTION_VIEW,uri));
         }
-
-
 }

@@ -16,7 +16,7 @@
             android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Da diem danh hom nay"
+            android:text="@string/attendanced"
             android:textColor="@color/main"
             android:visibility="gone"/>
         <LinearLayout
@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Họ và tên :"
+                android:text="@string/full_name"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textStyle="bold"/>
@@ -53,7 +53,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mã số sinh viên :"
+                android:text="@string/student_id"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textStyle="bold"/>

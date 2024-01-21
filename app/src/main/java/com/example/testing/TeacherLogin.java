@@ -44,26 +44,26 @@ public class TeacherLogin extends AppCompatActivity {
 //    }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-
-            // Dựa vào userId, xác định vai trò
-            if ("f4OGHI3BqmY6LkVeUkMjoaRp3D22".equals(userId)) {
-                Intent intent = new Intent(getApplicationContext(), TeacherDashboard.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(TeacherLogin.this, "Sai tài khoản/ mật khẩu", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        }
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//
+//        if (currentUser != null) {
+//            String userId = currentUser.getUid();
+//
+//            // Dựa vào userId, xác định vai trò
+//            if ("f4OGHI3BqmY6LkVeUkMjoaRp3D22".equals(userId)) {
+//                Intent intent = new Intent(getApplicationContext(), TeacherDashboard.class);
+//                startActivity(intent);
+//                finish();
+//            } else {
+//                Toast.makeText(TeacherLogin.this, "Sai tài khoản/ mật khẩu", Toast.LENGTH_LONG).show();
+//                finish();
+//            }
+//        }
+//    }
 
 
 //    @Override
@@ -161,10 +161,6 @@ public class TeacherLogin extends AppCompatActivity {
                                 }
                             }
                         });
-//
-
-
-
             }
         });
     }
