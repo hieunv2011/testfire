@@ -162,10 +162,6 @@ public class StudentLogin extends AppCompatActivity {
                                 }
                             }
                         });
-//
-
-
-
             }
         });
     }
