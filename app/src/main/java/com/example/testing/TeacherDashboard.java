@@ -55,7 +55,8 @@ public class TeacherDashboard extends AppCompatActivity implements SensorEventLi
         //DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(userName);
         btnCheckWifi = findViewById(R.id.btnCheckWifi);
         btnBrightness = findViewById(R.id.btnBrightness);
-all        // Set up sensor
+
+        // Set up sensor
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
